@@ -595,17 +595,21 @@ isc_result_t delete_host (hd, commit)
 	return ISC_R_SUCCESS;
 }
 
+int
+find_haddr_in_mongo(struct host_decl **, int , unsigned , 
+		const unsigned char *, const char *, int);
+
 int find_hosts_by_haddr (struct host_decl **hp, int htype,
 			 const unsigned char *haddr, unsigned hlen,
 			 const char *file, int line)
 {
 	struct hardware h;
-#if defined(LDAP_CONFIGURATION)
+
 	int ret;
 
-	if ((ret = find_haddr_in_ldap (hp, htype, hlen, haddr, file, line)))
+	if ((ret = find_haddr_in_mongo (hp, htype, hlen, haddr, file, line)))
 		return ret;
-#endif
+
 
 	h.hlen = hlen + 1;
 	h.hbuf [0] = htype;

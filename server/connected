@@ -1,0 +1,47 @@
+mongo.c:        int sent = send(conn->sock, cbuf, len, 0);
+mongo.c:        int sent = recv(conn->sock, cbuf, len, 0);
+mongo.c:    conn->sock = 0;
+mongo.c:    conn->connected = 0;
+mongo.c:    memset( conn->sa.sin_zero , 0 , sizeof(conn->sa.sin_zero) );
+mongo.c:    conn->sa.sin_family = AF_INET;
+mongo.c:    conn->sa.sin_port = htons(conn->left_opts->port);
+mongo.c:    conn->sa.sin_addr.s_addr = inet_addr( conn->left_opts->host );
+mongo.c:    conn->addressSize = sizeof(conn->sa);
+mongo.c:    conn->sock = socket( AF_INET, SOCK_STREAM, 0 );
+mongo.c:    if ( conn->sock <= 0 ){
+mongo.c:    	conn->connected = 0;
+mongo.c:    if ( connect( conn->sock , (struct sockaddr*)&conn->sa , conn->addressSize ) ){
+mongo.c:    	conn->connected = 0;
+mongo.c:    setsockopt( conn->sock, IPPROTO_TCP, TCP_NODELAY, (char *) &one, sizeof(one) );
+mongo.c:    conn->connected = 1;
+mongo.c:    MONGO_INIT_EXCEPTION(&conn->exception);
+mongo.c:    conn->left_opts = bson_malloc(sizeof(mongo_connection_options));
+mongo.c:    conn->right_opts = NULL;
+mongo.c:        memcpy( conn->left_opts , options , sizeof( mongo_connection_options ) );
+mongo.c:        strcpy( conn->left_opts->host , "127.0.0.1" );
+mongo.c:        conn->left_opts->port = 27017;
+mongo.c:    mongo_connection_options * tmp = conn->left_opts;
+mongo.c:    conn->left_opts = conn->right_opts;
+mongo.c:    conn->right_opts = tmp;
+mongo.c:    conn->connected = 0;
+mongo.c:    MONGO_INIT_EXCEPTION(&conn->exception);
+mongo.c:    conn->left_opts = NULL;
+mongo.c:    conn->right_opts = NULL;
+mongo.c:    conn->left_opts = bson_malloc(sizeof(mongo_connection_options));
+mongo.c:    conn->right_opts = bson_malloc(sizeof(mongo_connection_options));
+mongo.c:    memcpy( conn->left_opts,  left,  sizeof( mongo_connection_options ) );
+mongo.c:    memcpy( conn->right_opts, right, sizeof( mongo_connection_options ) );
+mongo.c:    if(conn->right_opts == NULL)
+mongo.c:    if ( ! conn->connected )
+mongo.c:    closesocket( conn->sock );
+mongo.c:    close( conn->sock );
+mongo.c:    conn->sock = 0;
+mongo.c:    conn->connected = 0;
+mongo.c:    free(conn->left_opts);
+mongo.c:    free(conn->right_opts);
+mongo.c:    conn->left_opts = NULL;
+mongo.c:    conn->right_opts = NULL;
+mongo_except.h:        switch(conn->exception->type){
+passerelle.c:	printf("conn = %d\n", conn->connected);
+passerelle.c:	if (conn->connected != 1) {
+passerelle.c:	printf("conn = %d\n", conn->connected);
