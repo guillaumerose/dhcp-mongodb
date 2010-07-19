@@ -39,7 +39,11 @@ static const int one = 1;
 static void looping_write(mongo_connection * conn, const void* buf, int len){
     const char* cbuf = buf;
     while (len){
-        int sent = send(conn->sock, cbuf, len, MSG_NOSIGNAL);
+#ifdef __APPLE__
+        int sent = send(conn->sock, cbuf, len, 0);
+#else
+        int sent = send(conn->sock, cbuf, len, MSG_NOSIGNAL);	
+#endif
         if (sent == -1) MONGO_THROW(MONGO_EXCEPT_NETWORK);
         cbuf += sent;
         len -= sent;
@@ -49,7 +53,11 @@ static void looping_write(mongo_connection * conn, const void* buf, int len){
 static void looping_read(mongo_connection * conn, void* buf, int len){
     char* cbuf = buf;
     while (len){
-        int sent = recv(conn->sock, cbuf, len, MSG_NOSIGNAL);
+#ifdef __APPLE__
+        int sent = recv(conn->sock, cbuf, len, 0);
+#else
+        int sent = recv(conn->sock, cbuf, len, MSG_NOSIGNAL);	
+#endif
         if (sent == 0 || sent == -1) MONGO_THROW(MONGO_EXCEPT_NETWORK);
         cbuf += sent;
         len -= sent;
@@ -131,6 +139,10 @@ static int mongo_connect_helper( mongo_connection * conn ){
     /* nagle */
     setsockopt( conn->sock, IPPROTO_TCP, TCP_NODELAY, (char *) &one, sizeof(one) );
 
+    // Handle disconnect at runtime
+#ifdef __APPLE__
+    setsockopt(conn->sock, SOL_SOCKET, SO_NOSIGPIPE, (char *)&one, sizeof(one));
+#endif
     /* TODO signals */
 
     conn->connected = 1;
