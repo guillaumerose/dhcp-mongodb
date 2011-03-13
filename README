@@ -1,3 +1,6 @@
+EDIT: I rewrite this with REST api.
+https://github.com/guillaumerose/dhcp-http-json
+
 MongoDB module for DHCP (lastest version)
 This is just a simple hack in order to use MongoDB as user database
 (instead of LDAP).
